@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Relogio from './components/Relogio'
+import Contador from './components/Contador'
+import { Button, Alert, Calendar } from 'antd'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <Relogio dataHora={new Date()} />
+      <Contador />
+      <Button type='primary' onClick={() => { alert('Clicou') }}>Clique aqui</Button>
+      <Alert message="Success Text" type="success" />
+      <Alert message="Info Text" type="info" />
+      <Alert message="Warning Text" type="warning" />
+      <Alert message="Error Text" type="error" />
+      <Calendar fullscreen={false} />
     </>
   )
 }
