@@ -1,9 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from 'axios';
+import TarefaItem from "../components/TarefaItem";
 
 const Tarefas = () => {
 
     const [tarefas, setTarefas] = useState([]);
+    const [busca, setBusca] = useState('');
+
+    const handleBusca = (event) => {
+        setBusca(event.target.value);
+    }
+
+    const tarefasFiltradas = useMemo(() => {
+        if (!busca) return tarefas;
+        return tarefas.filter((tarefa) =>
+            tarefa.title.includes(busca)
+        );
+    }, [busca, tarefas]);
+
 
     const requestTarefas = async () => {
         try {
@@ -15,13 +29,9 @@ const Tarefas = () => {
         }
     }
 
-    const renderTarefas = (tarefas) => {
+    const renderTarefas = (tarefas, index) => {
         return (
-            <tr key={tarefas.id}>
-                <td>{tarefas.id}</td>
-                <td>{tarefas.title}</td>
-                <td>{tarefas.completed ? 'Sim' : 'Não'}</td>
-            </tr>
+            <TarefaItem tarefa={tarefas} key={index} />
         )
     }
 
@@ -30,18 +40,24 @@ const Tarefas = () => {
     }, []);
 
     return (
-        <table border="1">
-            <thead>
-                <tr>
-                    <td>ID</td>
-                    <td>Título</td>
-                    <td>Concluída</td>
-                </tr>
-            </thead>
-            <tbody>
-                {tarefas.map(renderTarefas)}
-            </tbody>
-        </table>
+        <div>
+            <input placeholder="Buscar tarefa por título"
+                onChange={handleBusca}
+                value={busca} />
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Título</td>
+                        <td>Concluída</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tarefasFiltradas.map(renderTarefas)}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

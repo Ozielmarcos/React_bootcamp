@@ -1,5 +1,5 @@
 import './App.css'
-import Exemplos from './Exemplos'
+// import Exemplos from './Exemplos'
 import Tarefas from './pages/Tarefas';
 
 
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <Exemplos />
+      {/* <Exemplos /> */}
       <Tarefas />
     </>
   )
