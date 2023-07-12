@@ -1,8 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import TarefaItem from "../components/TarefaItem";
+import fakeAuth from "../fake-auth";
 
 const Tarefas = () => {
+    const navigate = useNavigate();
 
     const [tarefas, setTarefas] = useState([]);
     const [busca, setBusca] = useState('');
@@ -39,8 +42,14 @@ const Tarefas = () => {
         requestTarefas();
     }, []);
 
+    const handleSair = () => {
+        fakeAuth.isAuthenticated = false;
+        navigate('/login');
+    }
+
     return (
         <div>
+            <button onClick={handleSair}>Sair</button>
             <input placeholder="Buscar tarefa por título"
                 onChange={handleBusca}
                 value={busca} />
