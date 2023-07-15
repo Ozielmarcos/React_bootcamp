@@ -29,11 +29,23 @@ function TaskCreatePage() {
     try {
       setLoading(true);
 
-      // TODO: implementar
+      // TODO: implementado aqui
+      const response = await axios.get(`/tarefas/${taskId}`);
+
+      const { data } = response;
+
+      setFormValues({
+        titulo: {
+          value: data.titulo,
+          valid: true,
+        }
+      });
+
+
     } catch (error) {
       console.warn(error);
       Modal.error({
-        title: 'Não foi carregar a tarefa, tente novamente mais tarde.',
+        title: 'Não foi possível carregar a tarefa, tente novamente mais tarde.',
       });
     } finally {
       setLoading(false);
@@ -56,7 +68,19 @@ function TaskCreatePage() {
 
       if (!titulo?.valid) return;
 
-      // TODO: implementar
+      // TODO: implementado aqui
+      const body = { titulo: titulo.value, }
+
+      if (taskId) {
+        await axios.patch(`/tarefas/${taskId}`, body);
+      } else {
+        await axios.post(`/tarefas`, body);
+      }
+
+      notification.success({ message: 'Tarefa salva com sucesso!' });
+
+      navigate('/tasks');
+
     } catch (error) {
       console.warn(error);
       Modal.error({

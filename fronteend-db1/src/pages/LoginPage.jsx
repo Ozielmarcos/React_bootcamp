@@ -29,6 +29,20 @@ function LoginPage() {
       if (!email?.valid || !senha?.valid) return;
 
       // TODO: implementar
+      const body = {
+        email: email.value,
+        senha: senha.value,
+      }
+
+      const response = await axios.post('/usuarios/login', body);
+
+      const { token } = response.data;
+
+      LocalStorageHelper.setToken(token);
+
+      navigate('/tasks');
+
+
     } catch (error) {
       console.warn(error);
       const { response } = error;

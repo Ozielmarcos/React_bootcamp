@@ -21,6 +21,12 @@ function TaskListPage() {
       setLoading(true);
 
       // TODO: implementar
+      const response = await axios.get('/tarefas');
+
+      const { data } = response;
+
+      setTasks(data);
+
     } catch (error) {
       console.warn(error);
       Modal.error({
@@ -40,6 +46,22 @@ function TaskListPage() {
       setLoading(true);
 
       // TODO: implementar
+      let response;
+      if (concluida) {
+        response = await axios.put(`/tarefas/${taskId}/concluida`);
+      } else {
+        response = await axios.put(`/tarefas/${taskId}/pendente`);
+      }
+
+      const { data } = response;
+
+      const novaTarefas = [...tasks];
+      const index = novaTarefas.findIndex((tarefa) => tarefa.id === taskId);
+
+      novaTarefas.splice(index, 1, data);
+
+      setTasks(novaTarefas);
+
     } catch (error) {
       console.warn(error);
       Modal.error({
@@ -54,7 +76,16 @@ function TaskListPage() {
     try {
       setLoading(true);
 
-      // TODO: implementar
+      // TODO: implementado aqui
+      await axios.delete(`/tarefas/${taskId}`);
+
+      const novaTarefas = [...tasks];
+      const index = novaTarefas.findIndex((tarefa) => tarefa.id === taskId);
+
+      novaTarefas.splice(index, 1);
+
+      setTasks(novaTarefas);
+
     } catch (error) {
       console.warn(error);
       Modal.error({
@@ -107,7 +138,7 @@ function TaskListPage() {
 
             <Table
               dataSource={tasks}
-              pagination={false}
+              pagination
               loading={loading}
               rowKey={(task) => task.id}
             >
